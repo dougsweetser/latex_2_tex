@@ -15,19 +15,24 @@ my $help_string = <<HELP;
 
 Purpose: To get the format right for Drupal page  
 
-Usage: latex_2_tex.pl [-output file.out] file_name
+Usage: latex_2_tex.pl [-output file.out] file.txt
+
+Default: if no -output is set, creates file_tex.txt
+The contents of file_tex.txt can be pasted into any
+field that understand [tex]x^2[/tex] markup.
+
+Note: also prints to screen
 
 In a Mathematica notebook, select all (control a),
-COPY as LaTeX
+COPY AS LaTeX
 Open up a text file & paste.
 Please check that all \text{} ARE ON ONE LINE.
-Please check function names are in lower case, not UPPER.
-Avoid LaTeX in a paragraph of text.
+Please check function names are in lower case, not Upper.
 
 Run 
-latex_2_tex.pl file_name -out file.out
+latex_2_tex.pl file.txt
 
-Cut and past file.out to visualphysics.org
+Cut and past file_tex.tex to web page.
 HELP
 
 ### Algorithm
@@ -67,7 +72,7 @@ my $system_call;
 my $help       = "";
 my $test       = 0;
 my $error_flag = 0;
-my $QA;
+my $QA = 1;
 
 ### Main
 
@@ -123,8 +128,12 @@ while (<>) {
             $line = "\n\n<p>" . $line;
         }
 
+        # The tex_flag is for latex within a paragraph.
+        # It is set _unless_ the line ends in 
+        # a perios, colon, semicolon, or question mark.
         $tex_flag = 0;
-        $tex_flag = 1 if ( $line =~ /\[tex\]/ );
+        $tex_flag = 1 if ( $line =~ /[^\.\:\;\?]$/ );
+ 
         if ($end_flag) {
             $end_flag = 0;
             $line     = "[/tex]" . $line;
@@ -167,8 +176,7 @@ while (<>) {
         $line =~ s/^=\\text./=/;
         $line =~ s/\}\s+?$//;
         if ($tex_flag) {
-
-            # Do nothing to the line.
+            $line = "[tex]" . $line . "[/tex]";
         }
         else {
             $line = "\n\n[tex]" . $line . "[/tex]";
@@ -177,8 +185,7 @@ while (<>) {
     else {
         $mode = "tex";
         if ($tex_flag) {
-
-            # Do nothing to the line.
+            $line = "[tex]" . $line . "[/tex]";
         }
         else {
             $line = "\n\n[tex]" . $line . "[/tex]";

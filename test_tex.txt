@@ -1,10 +1,10 @@
 <p>what about different paragraphs?
 
-<p>This one has an equation[tex]x^2[/tex]. Hope it gets integrated.
+<p>This one has an equation [tex]x^2[/tex]. Hope it gets integrated.
 
 <p>Can I transform an array?
 
-<p>really?
+<p>These are squares:
 
 [tex]y^2[/tex]
 
@@ -18,9 +18,7 @@ y & z & t & -x \\
 z & -y & x & t
 \end{array} \right)[/tex]
 
-<p>We will have to see
-
-<p>Can I transform an array from non-text?
+<p>We will have to seeI cat transform an array from non-text.
 
 [tex]\begin{array}{cccc}
 t & -x & -y & -z \\

@@ -1,14 +1,14 @@
 \text{what about different paragraphs?}
 
-\text{This one has an equation[tex]}
+\text{This one has an equation }
 
 x^2
 
-\text{[/tex]. Hope it gets integrated.}
+\text{. Hope it gets integrated.}
 
 \text{Can I transform an array?}
 
-\text{really?}
+\text{These are squares:}
 
 y^2
 
@@ -23,7 +23,7 @@ q(t,x,y,z)=\left(
             \end{array}
             \right)
 \text{We will have to see}
-\text{Can I transform an array from non-text?}
+\text{I cat transform an array from non-text.}
 
 \begin{array}{cccc}
  t & -x & -y & -z \\
