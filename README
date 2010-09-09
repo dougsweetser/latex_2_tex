@@ -1,0 +1,17 @@
+Prove, play, ponder, and promote
+
+It is a challenge to do all four of these in mathematical physics.  
+
+Prove and play
+
+The tool I use to prove the math I work with is valid is Mathematica.  It can do the hard, detailed math accurately, like apply the Euler-Lagrange equations to a Lagrangian to generate the field equations.  In a certain sense, Mathematica can serve as a math grammer or validity checker.
+
+When reading someone else's preprint, it requires much work to reconstruct and then do variations on their work.  By using Mathematica notebooks, the variations can be done immediately.  One might call this an effort to make fast experiments in mathematical physics.
+
+Ponder and Promote
+
+A serious drawback of Mathematica is that its way of writing expressions is alien to the human eye.  Mathematica seems almost pathological intent on writing beautiful expressions in as ugly a fashion as possible.  We use equal signs to compare the left side to the right.  Mathematica instead has a line for input, then a line for output, using equal signs to assign values.
+
+It is easy enough for a person to write a line of input that makes Mathematicas input/output far more readable.  People cannot store much in the mind, which is why math equations are as brief as they are.  Brevity is key to pondering.  It is a good exercise to translate Mathematica's tortuous input/output into an elegant expression (presuming there is one).
+
+The web is the way to promote work.  MathML can be output directly from Mathematica, but often brownsers struggle with it.  A web site I use runs under Drupal.  At this time, it cannot handle MathML.  It can deal with text and math contained in tags like so: [tex]x^2[/tex].  This project is designed to produce such output from Mathematica.
