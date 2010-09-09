@@ -1,0 +1,34 @@
+\text{what about different paragraphs?}
+
+\text{This one has an equation[tex]}
+
+x^2
+
+\text{[/tex]. Hope it gets integrated.}
+
+\text{Can I transform an array?}
+
+\text{really?}
+
+y^2
+
+z^2
+
+q(t,x,y,z)=\left(
+        \begin{array}{cccc}
+         t & -x & -y & -z \\
+          x & t & -z & y \\
+           y & z & t & -x \\
+            z & -y & x & t
+            \end{array}
+            \right)
+\text{We will have to see}
+\text{Can I transform an array from non-text?}
+
+\begin{array}{cccc}
+ t & -x & -y & -z \\
+      x & t & -z & y \\
+       y & z & t & -x \\
+        z & -y & x & t
+        \end{array}
+        \text{We will have to see}
