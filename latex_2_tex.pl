@@ -15,7 +15,9 @@ my $help_string = <<HELP;
 
 Purpose: To get the format right for Drupal page  
 
-Usage: latex_2_tex.pl [-output file.out] file.txt
+Usage: STDIN | latex_2_tex.pl [-output file.out] file.txt
+
+Can take STDIN, produce STDOUT.
 
 Default: if no -output is set, creates file_tex.txt
 The contents of file_tex.txt can be pasted into any
@@ -62,6 +64,9 @@ my $tex_flag;
 my $begin_flag;
 my $begin_mode;
 my $end_flag;
+my ($anchor, @anchors);
+my $anchor_number = 0;
+my $links;
 
 # Utility variables.
 my $arg;
@@ -124,7 +129,15 @@ while (<>) {
         $line =~ s/^\\text.//;
         $line =~ s/\}$//;
 
-        if ( ( $last_mode eq 'not_tex' ) and !$tex_flag ) {
+        if ( $line =~ /^\d+\./ ) {
+            push @anchors, $line;
+            $line = qq(\n\n\n<h2><a name="$anchor_number">) . $line . "</a></h2>\n";
+            $anchor_number += 1;
+        }
+        elsif ( ( $last_mode eq 'not_tex' ) and !$tex_flag ) {
+            $line = "\n\n<p>" . $line;
+        }
+        elsif ( ( $last_mode eq 'tex' ) and !$tex_flag ) {
             $line = "\n\n<p>" . $line;
         }
 
@@ -218,15 +231,26 @@ $output_string =~ s/\\?backslash//g;
 $output_string =~ s/^[\s\n]+//;
 $output_string =~ s/[\s\n]+$//;
 
+# Generate the links.
+$anchor_number = 0;
+foreach $anchor (@anchors) {
+    $links .= qq(<a href="\#) . $anchor_number . qq(">$anchor</a>\n);
+    $anchor_number += 1;
+}
+$output_string = $links . $output_string;
+
 # Print modified lines.
-open OUTPUT, ">$output_file" || die "Unable to open file $output_file: $!";
-print OUTPUT $output_string;
 print STDOUT $output_string;
-close OUTPUT;
 
-my $line_count = `wc -l $output_file`;
+if ($output_file) {
+    open OUTPUT, ">$output_file" || die "Unable to open file $output_file: $!";
+    print OUTPUT $output_string;
 
-print STDERR "\n\nline number count: $line_count";
+    close OUTPUT;
+    my $line_count = `wc -l $output_file`;
+
+    print STDERR "\n\nline number count: $line_count";
+}
 
 ### Signals
 
@@ -237,7 +261,7 @@ exit($error_flag);
 # Get data, assign to variables.
 sub __get_data {
 
-    $command_run = "$0 @ARGV";
+#   $command_run = "$0 @ARGV";
 
     # Get options.
     $get = GetOptions(
@@ -249,15 +273,12 @@ sub __get_data {
 
     die ("Check options please.\nProgram exiting.\n") unless $get;
 
-    die "Please provide a file_name at the command line.\nProgram exiting.\n"
-      unless -e "$ARGV[0]";
-
     if ($help) {
         print $help_string;
         exit(1);
     }
 
-    unless ($output_file) {
+    if ($ARGV[0] and !$output_file) {
 
         $output_file = $ARGV[0];
 

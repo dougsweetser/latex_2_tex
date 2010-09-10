@@ -1,6 +1,7 @@
-<p>what about different paragraphs?
-
-<p>This one has an equation [tex]x^2[/tex]. Hope it gets integrated.
+<a href="#0">1. This is a heading</a>
+<a href="#1">2. Second heading</a>
+<h2><a name="0">1. This is a heading</a></h2>
+First paragraphThis paragraph has an equation [tex]x^2[/tex]. Hope it gets integrated.
 
 <p>Can I transform an array?
 
@@ -18,6 +19,8 @@ y & z & t & -x \\
 z & -y & x & t
 \end{array} \right)[/tex]
 
+<p>
+
 <p>We will have to seeI cat transform an array from non-text.
 
 [tex]\begin{array}{cccc}
@@ -28,3 +31,7 @@ z & -y & x & t
 \end{array} [/tex]
 
 <p>We will have to see
+
+
+<h2><a name="1">2. Second heading</a></h2>
+this has <em>italics} and \text{<b>b\&#246;ld</em></b>

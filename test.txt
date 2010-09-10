@@ -1,6 +1,8 @@
-\text{what about different paragraphs?}
+\text{1. This is a heading}
 
-\text{This one has an equation }
+\text{First paragraph}
+
+\text{This paragraph has an equation }
 
 x^2
 
@@ -32,3 +34,7 @@ q(t,x,y,z)=\left(
         z & -y & x & t
         \end{array}
         \text{We will have to see}
+
+\text{2. Second heading}
+
+\text{this has \textit{italics} and \pmb{b\{\" o}ld}}
