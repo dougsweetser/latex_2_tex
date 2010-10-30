@@ -57,16 +57,20 @@ use Data::Dumper;
 
 my $line;
 my ( $output_file, $output_string );
-my $mode        = 'not_tex';
-my $last_mode   = 'not_tex';
+my $mode        = '';
+my $last_mode   = 'none';
 my $blank_found = '';
+my $first_line_flag = 1;
 my $tex_flag;
 my $begin_flag;
 my $begin_mode;
 my $end_flag;
+my $equal_flag;
 my ($anchor, @anchors);
-my $anchor_number = 0;
+my $anchor_number = 1;
 my $links;
+my $eq_counter = 1;
+my $number_all;
 
 # Utility variables.
 my $arg;
@@ -116,6 +120,7 @@ while (<>) {
 
     # Boxtimes symbol
     $line =~ s/text\{(boxtimes)\}/boxtimes/g;
+    $line =~ s/unicode\{22a0\}/boxtimes/g;
 
     # Vectors
     $line =~ s/overset\{\\rightharpoonup \}/vec/g;
@@ -123,9 +128,32 @@ while (<>) {
     # Check squares are in the right place.
     $line =~ s/\s\^/\^/g;
 
+    # Delete rights with no lefts.
+    # Could make fancier counting # of rights and lefts.
+    if ( ($line =~ /\\right/) and ($line !~ /\\left/)) {
+        $line =~ s/\\right//g;
+    }
+
     # Handle returns for non_tex and tex differently.
-    if ( $line =~ /^\\text/ ) {
+    #  $output_string .= "INPUT line: $line\n";
+    if ($first_line_flag) {
+       $line =~ s/.*\\text.//;
+       $line =~ s/\}$//;
+       $first_line_flag = 0;
+
+       if ( $line =~ /^\d+\./ ) {
+            push @anchors, $line;
+            $line = qq(\n\n\n<h2><a name="$anchor_number">) . $line . "</a></h2>\n";
+            $anchor_number += 1;
+        }
+        else {
+            $line .= "\n\n";
+        }
+    }
+    elsif ( $line =~ /^\\text/ ) {
         $mode = "not_tex";
+        $equal_flag = 0;
+
         $line =~ s/^\\text.//;
         $line =~ s/\}$//;
 
@@ -149,7 +177,8 @@ while (<>) {
  
         if ($end_flag) {
             $end_flag = 0;
-            $line     = "[/tex]" . $line;
+            $line     = " \\quad eq. $eq_counter [/tex]" . $line;
+            $eq_counter += 1;
         }
     }
     # Next 4 elsif's handle \begin..\end LaTeX
@@ -169,9 +198,6 @@ while (<>) {
         if ( $begin_mode eq "tex" ) {
             $line .= "[/tex]\n\n<p>";
         }
-        else {
-            $line = "[/tex]iHELLO<p>" . $line;
-        }
     }
     elsif ( $line =~ /\\end/ ) {
         $begin_flag = 0;
@@ -186,6 +212,7 @@ while (<>) {
     # Separate [tex] lines [/tex]
     elsif ( $line =~ /^=\\text/ ) {
         $mode = "tex";
+        $equal_flag = 1;
         $line =~ s/^=\\text./=/;
         $line =~ s/\}\s+?$//;
         if ($tex_flag) {
@@ -197,11 +224,23 @@ while (<>) {
     }
     else {
         $mode = "tex";
-        if ($tex_flag) {
+        if ($tex_flag or $equal_flag) {
             $line = "[tex]" . $line . "[/tex]";
         }
         else {
-            $line = "\n\n[tex]" . $line . "[/tex]";
+            if ($last_mode eq "not_tex") {
+                $line = "\n\n[tex]" . $line . " \\quad eq. $eq_counter [/tex]";
+                $eq_counter++;
+            }
+            else {
+                if ($number_all) {
+                    $line = "\n\n[tex]" . $line . " \\quad eq. $eq_counter [/tex]";
+                    $eq_counter += 1;
+                }
+                else {
+                    $line = "\n\n[tex]" . $line . "[/tex]";
+                }
+            }
         }
     }
 
@@ -234,8 +273,8 @@ $output_string =~ s/[\s\n]+$//;
 # Generate the links.
 $anchor_number = 0;
 foreach $anchor (@anchors) {
-    $links .= qq(<a href="\#) . $anchor_number . qq(">$anchor</a>\n);
     $anchor_number += 1;
+    $links .= qq(<a href="\#) . $anchor_number . qq(">$anchor</a>\n);
 }
 $output_string = $links . $output_string;
 
@@ -265,6 +304,7 @@ sub __get_data {
 
     # Get options.
     $get = GetOptions(
+        "number_all!" => \$number_all,
         "output_file=s" => \$output_file,
         "test!"         => \$test,
         "QA!"           => \$QA,

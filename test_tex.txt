@@ -1,13 +1,13 @@
-<a href="#0">1. This is a heading</a>
-<a href="#1">2. Second heading</a>
-<h2><a name="0">1. This is a heading</a></h2>
+<a href="#1">1. This is a heading</a>
+<a href="#2">2. Second heading</a>
+<h2><a name="1">1. This is a heading</a></h2>
 First paragraphThis paragraph has an equation [tex]x^2[/tex]. Hope it gets integrated.
 
 <p>Can I transform an array?
 
 <p>These are squares:
 
-[tex]y^2[/tex]
+[tex]y^2 \quad eq. 1 [/tex]
 
 [tex]z^2[/tex]
 
@@ -17,7 +17,7 @@ t & -x & -y & -z \\
 x & t & -z & y \\
 y & z & t & -x \\
 z & -y & x & t
-\end{array} \right)[/tex]
+\end{array} )[/tex]
 
 <p>
 
@@ -28,10 +28,10 @@ t & -x & -y & -z \\
 x & t & -z & y \\
 y & z & t & -x \\
 z & -y & x & t
-\end{array} [/tex]
+\end{array}  \quad eq. 2 [/tex]
 
 <p>We will have to see
 
 
-<h2><a name="1">2. Second heading</a></h2>
+<h2><a name="2">2. Second heading</a></h2>
 this has <em>italics} and \text{<b>b\&#246;ld</em></b>
